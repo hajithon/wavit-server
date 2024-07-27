@@ -10,7 +10,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -49,6 +48,8 @@ public class WebSecurityConfig {
         defaultFilterChain(http);
 
         http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(getSwaggerUrls())
+                .permitAll()
                 .requestMatchers("/wavit-actuator/**")
                 .permitAll()
                 .requestMatchers("/auth/**")
@@ -61,17 +62,6 @@ public class WebSecurityConfig {
 
         http.exceptionHandling(
                 exception -> exception.authenticationEntryPoint(customAuthenticationEntryPoint(objectMapper)));
-
-        return http.build();
-    }
-
-    @Bean
-    @Order(1)
-    public SecurityFilterChain swaggerFilterChain(HttpSecurity http) throws Exception {
-        defaultFilterChain(http);
-
-        http.securityMatcher(getSwaggerUrls()).httpBasic(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
 
         return http.build();
     }
