@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.wavit.domain.auth.application.LoginService;
 import xyz.wavit.domain.auth.dto.AccessTokenDto;
 import xyz.wavit.domain.auth.dto.LoginRequest;
+import xyz.wavit.domain.auth.dto.SignupRequest;
 import xyz.wavit.domain.user.dto.UserFullDto;
 
 @Tag(name = "[Auth]", description = "로그인 및 회원가입 API")
@@ -32,5 +33,11 @@ public class AuthController {
         headers.setBearerAuth(accessTokenDto.tokenValue());
 
         return ResponseEntity.ok().headers(headers).body(response);
+    }
+
+    @PostMapping("/signup")
+    public ResponseEntity<Void> signup(@Valid @RequestBody SignupRequest signupRequest) {
+        loginService.signup(signupRequest);
+        return ResponseEntity.ok().build();
     }
 }

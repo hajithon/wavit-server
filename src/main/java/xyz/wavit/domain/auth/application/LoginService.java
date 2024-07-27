@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.wavit.domain.auth.dto.AccessTokenDto;
 import xyz.wavit.domain.auth.dto.LoginRequest;
+import xyz.wavit.domain.auth.dto.SignupRequest;
 import xyz.wavit.domain.user.dao.UserRepository;
 import xyz.wavit.domain.user.domain.User;
 import xyz.wavit.domain.user.dto.UserFullDto;
@@ -44,5 +45,17 @@ public class LoginService {
             log.warn("[LoginService] 비밀번호 불일치: username={}, password={}", request.username(), request.password());
             throw CustomException.from(ErrorCode.INVALID_PASSWORD);
         }
+    }
+
+    @Transactional
+    public void signup(SignupRequest request) {
+        if (userRepository.existsByUsername(request.username())) {
+            throw CustomException.from(ErrorCode.USER_ALREADY_EXISTS);
+        }
+
+        User user = User.create(
+                request.name(), request.nickname(), request.username(), passwordEncoder.encode(request.password()));
+
+        userRepository.save(user);
     }
 }
