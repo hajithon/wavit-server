@@ -55,6 +55,10 @@ test {
     useJUnitPlatform()
 }
 
+jar {
+    enabled = false
+}
+
 spotless {
     format 'misc', {
         target '**/*.gradle', '**/*.md'
