@@ -10,3 +10,10 @@ spring:
       - actuator
       - security
     active: ${SPRING_PROFILES_ACTIVE:local}
+
+logging:
+  level:
+    xyz.wavit.domain.*.api.*: debug
+    org.springframework.web: debug
+    org.springframework.orm.jpa: debug
+    org.springframework.transaction: debug
