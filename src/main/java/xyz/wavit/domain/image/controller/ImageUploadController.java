@@ -23,10 +23,10 @@ public class ImageUploadController {
         return ResponseEntity.ok(response);
     }
 
-    // 이미지 조회를 위한 presigned-url 반환
-    @GetMapping("/image")
-    public ResponseEntity<String> viewImage(@RequestParam("storedImagePath") String storedImagePath) {
-        String presignedUrl = imageS3Service.getPresignedUrlForView(storedImagePath);
-        return ResponseEntity.ok(presignedUrl);
+    // 이미지 업로드 완료시 호출
+    @PostMapping("/image/upload-complete")
+    public void imageUploadComplete(@RequestParam("imageName") String imageName) {
+        imageS3Service.uploadComplete(imageName);
     }
+
 }

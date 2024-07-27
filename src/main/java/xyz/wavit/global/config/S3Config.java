@@ -39,10 +39,13 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import xyz.wavit.global.property.S3Property;
+
+import java.util.logging.Logger;
 
 @Configuration
 @EnableConfigurationProperties(S3Property.class)
@@ -53,6 +56,7 @@ public class S3Config {
 
     @Bean
     public AmazonS3 s3Client() {
+
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(s3Property.getAccessKey(), s3Property.getSecretKey());
 
         return AmazonS3ClientBuilder.standard()

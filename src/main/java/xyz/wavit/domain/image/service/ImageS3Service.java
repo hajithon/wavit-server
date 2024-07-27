@@ -23,7 +23,7 @@ public class ImageS3Service {
         return random + originName;
     }
 
-    public String generatePresignedUrl(String imageName, com.amazonaws.HttpMethod method) {
+    public String generatePresignedUrl(String imageName) {
         // PresignedUrl 만료시간 설정 (10분)
         Date expiration = new Date();
         long expTimeMillis = expiration.getTime();
@@ -33,7 +33,7 @@ public class ImageS3Service {
         // presigned url 생성
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(s3Property.getBucket(), imageName)
-                        .withMethod(method)
+                        .withMethod(com.amazonaws.HttpMethod.PUT)
                         .withExpiration(expiration);
 
         String presignedUrl =
@@ -45,19 +45,18 @@ public class ImageS3Service {
     public PresignedUrlResponse getPresignedUrl(MultipartFile image) {
         String originName = image.getOriginalFilename();
         String changedName = changedImageName(originName);
-        String presignedUrl = generatePresignedUrl(changedName, com.amazonaws.HttpMethod.PUT);
-        String storedImagePath = amazonS3.getUrl(s3Property.getBucket(), changedName).toString();
+        String presignedUrl = generatePresignedUrl(changedName);
 
         // presignedUrl : 이미지 업로드 하기 위한 url
-        // storedImagePath : 이미지가 업로드 될 위치
-        return new PresignedUrlResponse(presignedUrl, storedImagePath);
+        return new PresignedUrlResponse(presignedUrl, changedName);
     }
 
+    public void uploadComplete(String imageName)
+    {
+        String storedImagePath = amazonS3.getUrl(s3Property.getBucket(), imageName).toString();
 
-    // 이미지 조회에 필요한 presigned url
-    public String getPresignedUrlForView(String storedImagePath) {
-        String imageName = storedImagePath.substring(storedImagePath.lastIndexOf("/") + 1);
-        return generatePresignedUrl(imageName, com.amazonaws.HttpMethod.GET);
+        // challengeRecord에 storedImagePaht 추가
+
     }
 
 }

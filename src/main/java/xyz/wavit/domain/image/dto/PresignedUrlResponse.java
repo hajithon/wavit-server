@@ -8,6 +8,6 @@ import lombok.Data;
 public class PresignedUrlResponse {
 
     private String presignedUrl;
-    private String storedImagePath;
 
+    private String imageName;
 }
