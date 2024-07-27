@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.wavit.domain.challenge.application.ChallengeService;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
+import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 
 @Tag(name = "[Challenge]", description = "챌린지 API")
 @RestController
@@ -39,6 +40,13 @@ public class ChallengeController {
     @PostMapping("/my/incomplete")
     public ResponseEntity<ChallengeIncompleteDto> getMyIncompleteChallenge() {
         var response = challengeService.getMyIncompleteChallenge();
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "오늘 챌린지 통계 조회하기", description = "오늘 챌린지의 통계를 조회합니다. 현재 나의 위치는 존재하지 않는 경우 null입니다.")
+    @PostMapping("/today/report")
+    public ResponseEntity<ChallengeReportDto> getTodayChallengeRepord() {
+        var response = challengeService.getTodayChallengeReport();
         return ResponseEntity.ok(response);
     }
 }

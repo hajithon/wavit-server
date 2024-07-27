@@ -1,7 +1,9 @@
 package xyz.wavit.domain.challenge.application;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import xyz.wavit.domain.challenge.domain.Challenge;
 import xyz.wavit.domain.challenge.domain.ChallengeValidator;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
+import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 import xyz.wavit.domain.common.model.ImageUploadStatus;
 import xyz.wavit.domain.user.dao.UserRepository;
 import xyz.wavit.domain.user.domain.User;
@@ -68,11 +71,15 @@ public class ChallengeService {
     public ChallengeIncompleteDto getMyIncompleteChallenge() {
         User currentUser = userUtil.getCurrentUser();
 
-        return challengeRepository
-                .findByUploadStatusAndChallengedUser(ImageUploadStatus.PENDING, currentUser)
-                .filter(this::isToday)
+        return getMyIncompleteChallengeOfToday(currentUser)
                 .map(challenge -> ChallengeIncompleteDto.of(challenge, getTodayChallengeCount(challenge)))
                 .orElse(ChallengeIncompleteDto.createEmpty());
+    }
+
+    private Optional<Challenge> getMyIncompleteChallengeOfToday(User currentUser) {
+        return challengeRepository
+                .findByUploadStatusAndChallengedUser(ImageUploadStatus.PENDING, currentUser)
+                .filter(this::isToday);
     }
 
     private boolean isToday(Challenge challenge) {
@@ -81,5 +88,27 @@ public class ChallengeService {
 
     private Long getTodayChallengeCount(Challenge challenge) {
         return challengeRepository.findChallengeOrderForToday(challenge.getId(), LocalDate.now());
+    }
+
+    @Transactional(readOnly = true)
+    public ChallengeReportDto getTodayChallengeReport() {
+        User currentUser = userUtil.getCurrentUser();
+        Integer myChallengeCount = getMyIncompleteChallengeOfToday(currentUser)
+                .map(this::getTodayChallengeCount)
+                .map(Long::intValue)
+                .orElse(null);
+
+        LocalDate now = LocalDate.now();
+
+        return ChallengeReportDto.of(myChallengeCount, getTotalChallengeCount(now), getTotalPendingChallengeCount(now));
+    }
+
+    private int getTotalChallengeCount(LocalDate today) {
+        return challengeRepository.countByCreatedAtBetween(today.atStartOfDay(), today.atTime(LocalTime.MAX));
+    }
+
+    private int getTotalPendingChallengeCount(LocalDate today) {
+        return challengeRepository.countByUploadStatusAndCreatedAtBetween(
+                ImageUploadStatus.PENDING, today.atStartOfDay(), today.atTime(LocalTime.MAX));
     }
 }
