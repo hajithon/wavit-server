@@ -50,7 +50,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/wavit-actuator/**")
                 .permitAll()
                 .anyRequest()
-                .permitAll());
+                .authenticated());
 
         http.addFilterBefore(jwtExceptionFilter(objectMapper), LogoutFilter.class);
         http.addFilterAfter(jwtFilter(jwtService), LogoutFilter.class);
