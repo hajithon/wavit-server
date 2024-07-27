@@ -20,6 +20,8 @@ import org.hibernate.annotations.Comment;
 import xyz.wavit.domain.common.model.BaseEntity;
 import xyz.wavit.domain.common.model.ImageUploadStatus;
 import xyz.wavit.domain.user.domain.User;
+import xyz.wavit.global.exception.CustomException;
+import xyz.wavit.global.exception.ErrorCode;
 
 @Getter
 @Entity
@@ -83,6 +85,7 @@ public class Challenge extends BaseEntity {
     }
 
     public static Challenge createByUser(User challengedUser, User challengedBy) {
+        validateCreate(challengedUser, challengedBy);
         LocalDateTime now = LocalDateTime.now();
         return Challenge.builder()
                 .startAt(now)
@@ -91,6 +94,12 @@ public class Challenge extends BaseEntity {
                 .challengedUser(challengedUser)
                 .challengedBy(challengedBy)
                 .build();
+    }
+
+    private static void validateCreate(User challengedUser, User challengedBy) {
+        if (challengedUser.getId().equals(challengedBy.getId())) {
+            throw CustomException.from(ErrorCode.CHALLENGE_NOMINATED_BY_ME);
+        }
     }
 
     /**
