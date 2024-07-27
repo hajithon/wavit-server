@@ -4,13 +4,17 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.wavit.domain.challenge.application.ChallengeService;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
+import xyz.wavit.domain.challenge.dto.ChallengeFeedDto;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
 import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 
@@ -47,6 +51,14 @@ public class ChallengeController {
     @PostMapping("/today/report")
     public ResponseEntity<ChallengeReportDto> getTodayChallengeRepord() {
         var response = challengeService.getTodayChallengeReport();
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "오늘 완료된 전체 챌린지 조회하기", description = "오늘 완료된 챌린지 목록을 조회합니다.")
+    @GetMapping("/today/completed")
+    public ResponseEntity<Slice<ChallengeFeedDto>> getTodayCompletedChallenges(
+            @RequestParam int size, @RequestParam(required = false) Long lastId) {
+        var response = challengeService.getTodayCompletedChallenges(size, lastId);
         return ResponseEntity.ok(response);
     }
 }
