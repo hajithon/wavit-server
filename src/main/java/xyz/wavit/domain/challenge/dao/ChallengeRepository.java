@@ -10,7 +10,7 @@ import xyz.wavit.domain.user.domain.User;
 
 public interface ChallengeRepository extends JpaRepository<Challenge, Long>, ChallengeCustomRepository {
 
-    int countByChallengedUser(User challengedUser);
+    Long countByChallengedUser(User challengedUser);
 
     List<Challenge> findByChallengedUser(User user);
 
