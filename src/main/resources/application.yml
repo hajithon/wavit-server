@@ -8,4 +8,5 @@ spring:
       prod: prod, datasource
     include:
       - actuator
+      - security
     active: ${SPRING_PROFILES_ACTIVE:local}
