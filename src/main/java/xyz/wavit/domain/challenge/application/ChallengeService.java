@@ -15,6 +15,7 @@ import xyz.wavit.domain.challenge.domain.ChallengeValidator;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
 import xyz.wavit.domain.challenge.dto.ChallengeFeedDto;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
+import xyz.wavit.domain.challenge.dto.ChallengeMyReportDto;
 import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 import xyz.wavit.domain.common.model.ImageUploadStatus;
 import xyz.wavit.domain.user.dao.UserRepository;
@@ -114,7 +115,16 @@ public class ChallengeService {
                 ImageUploadStatus.PENDING, today.atStartOfDay(), today.atTime(LocalTime.MAX));
     }
 
+    @Transactional(readOnly = true)
     public Slice<ChallengeFeedDto> getTodayCompletedChallenges(int size, Long lastId) {
         return challengeRepository.findTodayCompletedChallenges(size, lastId).map(ChallengeFeedDto::from);
+    }
+
+    @Transactional(readOnly = true)
+    public ChallengeMyReportDto getMyChallengeReport() {
+        User currentUser = userUtil.getCurrentUser();
+        return ChallengeMyReportDto.of(
+                challengeRepository.countByChallengedUser(currentUser),
+                userRepository.countByChallengedBy(currentUser));
     }
 }

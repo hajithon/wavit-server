@@ -6,4 +6,6 @@ import xyz.wavit.domain.user.domain.User;
 public interface UserCustomRepository {
 
     List<User> findCandidateUsers(User currentUser, int limit);
+
+    Long countByChallengedBy(User currentUser);
 }

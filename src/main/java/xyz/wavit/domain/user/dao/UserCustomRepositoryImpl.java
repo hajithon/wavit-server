@@ -29,4 +29,13 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
                 .limit(limit)
                 .fetch();
     }
+
+    @Override
+    public Long countByChallengedBy(User currentUser) {
+        return queryFactory
+                .select(challenge.challengedUser.countDistinct())
+                .from(challenge)
+                .where(challenge.challengedBy.eq(currentUser))
+                .fetchOne();
+    }
 }

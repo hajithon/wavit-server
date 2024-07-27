@@ -16,6 +16,7 @@ import xyz.wavit.domain.challenge.application.ChallengeService;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
 import xyz.wavit.domain.challenge.dto.ChallengeFeedDto;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
+import xyz.wavit.domain.challenge.dto.ChallengeMyReportDto;
 import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 
 @Tag(name = "[Challenge]", description = "챌린지 API")
@@ -59,6 +60,13 @@ public class ChallengeController {
     public ResponseEntity<Slice<ChallengeFeedDto>> getTodayCompletedChallenges(
             @RequestParam int size, @RequestParam(required = false) Long lastId) {
         var response = challengeService.getTodayCompletedChallenges(size, lastId);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "현재 유저의 챌린지 통계 조회하기", description = "현재 유저의 챌린지 통계를 조회합니다.")
+    @GetMapping("/my/report")
+    public ResponseEntity<ChallengeMyReportDto> getMyChallengeReport() {
+        var response = challengeService.getMyChallengeReport();
         return ResponseEntity.ok(response);
     }
 }
