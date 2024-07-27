@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: datasource
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DS_HOST:localhost}:${DS_PORT:3306}/${DS_DATABASE:}
+    username: ${DS_USERNAME:}
+    password: ${DS_PASSWORD:}
+
+  jpa:
+    properties:
+      hibernate:
+        default_batch_fetch_size: 1000
