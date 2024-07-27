@@ -7,4 +7,8 @@ public record UserFullDto(Long userId, UserRole role, String name, String nickna
     public static UserFullDto from(User user) {
         return new UserFullDto(user.getId(), user.getRole(), user.getName(), user.getNickname(), user.getUsername());
     }
+
+    public static UserFullDto createEmpty() {
+        return new UserFullDto(null, null, null, null, null);
+    }
 }
