@@ -1,16 +1,14 @@
-package xyz.wavit.global.config.s3;
+package xyz.wavit.global.property;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Component;
-import xyz.wavit.global.property.JwtProperty;
 
-@Getter
+@Data
 @RequiredArgsConstructor
-@Component
-@ConfigurationProperties(prefix = "s3")
+@ConfigurationProperties(prefix = "storage")
 public class S3Property {
 
     private String accessKey;

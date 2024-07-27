@@ -23,14 +23,6 @@ public class ImageUploadController {
         return ResponseEntity.ok(response);
     }
 
-    // DB에 이미지 정보 저장
-//    @PostMapping("/image/info")
-//    public ResponseEntity<Image> saveImageInfo(@RequestParam("originName") String originName,
-//                                               @RequestParam("storedImagePath") String storedImagePath) {
-//        Image image = imageS3Service.saveImageInfo(originName, storedImagePath);
-//        return ResponseEntity.ok(image);
-//    }
-
     // 이미지 조회를 위한 presigned-url 반환
     @GetMapping("/image")
     public ResponseEntity<String> viewImage(@RequestParam("storedImagePath") String storedImagePath) {

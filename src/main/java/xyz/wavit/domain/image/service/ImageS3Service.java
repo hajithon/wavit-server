@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.wavit.domain.image.dto.PresignedUrlResponse;
-import xyz.wavit.global.config.s3.S3Property;
+import xyz.wavit.global.property.S3Property;
 
 import java.util.Date;
 import java.util.UUID;
@@ -52,20 +52,6 @@ public class ImageS3Service {
         // storedImagePath : 이미지가 업로드 될 위치
         return new PresignedUrlResponse(presignedUrl, storedImagePath);
     }
-
-//    public Image saveImageInfo(String originName, String storedImagePath) {
-//        // DB에 이미지 정보 추가
-//        // origin file name
-//        // stored image path in s3
-//        Image newImage = Image.builder()
-//                .originName(originName)
-//                .storedImagePath(storedImagePath).build();
-//
-//        // DB에 저장 로직 추가
-////        imageRepository.save(newImage);
-//
-//        return newImage;
-//    }
 
 
     // 이미지 조회에 필요한 presigned url
