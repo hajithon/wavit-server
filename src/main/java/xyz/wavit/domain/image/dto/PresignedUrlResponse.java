@@ -1,4 +1,4 @@
-package xyz.wavit.image.dto;
+package xyz.wavit.domain.image.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package xyz.wavit.image.controller;
+package xyz.wavit.domain.image.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.wavit.image.dto.PresignedUrlResponse;
-import xyz.wavit.image.service.ImageS3Service;
+import xyz.wavit.domain.image.dto.PresignedUrlResponse;
+import xyz.wavit.domain.image.service.ImageS3Service;
 
 @RestController
 @RequiredArgsConstructor

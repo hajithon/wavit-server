@@ -1,15 +1,13 @@
-package xyz.wavit.image.service;
+package xyz.wavit.domain.image.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.wavit.image.dto.PresignedUrlResponse;
-import xyz.wavit.s3config.S3Key;
+import xyz.wavit.domain.image.dto.PresignedUrlResponse;
+import xyz.wavit.global.config.s3.S3Key;
 
-import java.awt.*;
 import java.util.Date;
 import java.util.UUID;
 

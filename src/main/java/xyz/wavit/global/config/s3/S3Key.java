@@ -1,4 +1,4 @@
-package xyz.wavit.s3config;
+package xyz.wavit.global.config.s3;
 
 import lombok.Data;
 
