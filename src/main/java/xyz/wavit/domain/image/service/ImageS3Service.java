@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.wavit.domain.image.dto.PresignedUrlResponse;
-import xyz.wavit.global.config.s3.S3Key;
+import xyz.wavit.global.config.s3.S3Property;
 
 import java.util.Date;
 import java.util.UUID;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ImageS3Service {
 
-    private final S3Key s3Key;
+    private final S3Property s3Property;
     private final AmazonS3 amazonS3;
 
     private String changedImageName(String originName) {
@@ -32,7 +32,7 @@ public class ImageS3Service {
 
         // presigned url 생성
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(s3Key.getBucketName(), imageName)
+                new GeneratePresignedUrlRequest(s3Property.getBucket(), imageName)
                         .withMethod(method)
                         .withExpiration(expiration);
 
@@ -46,7 +46,7 @@ public class ImageS3Service {
         String originName = image.getOriginalFilename();
         String changedName = changedImageName(originName);
         String presignedUrl = generatePresignedUrl(changedName, com.amazonaws.HttpMethod.PUT);
-        String storedImagePath = amazonS3.getUrl(s3Key.getBucketName(), changedName).toString();
+        String storedImagePath = amazonS3.getUrl(s3Property.getBucket(), changedName).toString();
 
         // presignedUrl : 이미지 업로드 하기 위한 url
         // storedImagePath : 이미지가 업로드 될 위치
