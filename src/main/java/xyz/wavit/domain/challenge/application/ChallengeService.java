@@ -29,6 +29,8 @@ public class ChallengeService {
                 nominatedUsers.stream().map(Challenge::createBySystem).toList();
 
         challengeRepository.saveAll(challenges);
+
+        log.info("[ChallengeService] 시스템에 의한 챌린지 생성: ids={}", request.nominatedUserIds());
     }
 
     @Transactional
@@ -42,5 +44,7 @@ public class ChallengeService {
                 .toList();
 
         challengeRepository.saveAll(challenges);
+
+        log.info("[ChallengeService] 사용자에 의한 챌린지 생성: ids={}", request.nominatedUserIds());
     }
 }
