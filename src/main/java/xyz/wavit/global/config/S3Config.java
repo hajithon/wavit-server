@@ -1,16 +1,16 @@
-package xyz.wavit.global.config;//package xyz.wavit.global.config.s3;
+package xyz.wavit.global.config; // package xyz.wavit.global.config.s3;
 //
-//import com.amazonaws.auth.AWSStaticCredentialsProvider;
-//import com.amazonaws.auth.BasicAWSCredentials;
-//import com.amazonaws.services.s3.AmazonS3;
-//import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-//import io.github.cdimascio.dotenv.Dotenv;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
+// import com.amazonaws.auth.AWSStaticCredentialsProvider;
+// import com.amazonaws.auth.BasicAWSCredentials;
+// import com.amazonaws.services.s3.AmazonS3;
+// import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+// import io.github.cdimascio.dotenv.Dotenv;
+// import org.springframework.context.annotation.Bean;
+// import org.springframework.context.annotation.Configuration;
 //
-//@Configuration
-//public class S3Config
-//{
+// @Configuration
+// public class S3Config
+// {
 //    @Bean
 //    public S3Key s3Key() {
 //        Dotenv dotenv = Dotenv.configure().load();
@@ -32,20 +32,17 @@ package xyz.wavit.global.config;//package xyz.wavit.global.config.s3;
 //                .withRegion(s3Key.getRegion())
 //                .build();
 //    }
-//}
+// }
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import xyz.wavit.global.property.S3Property;
-
-import java.util.logging.Logger;
 
 @Configuration
 @EnableConfigurationProperties(S3Property.class)
@@ -57,7 +54,8 @@ public class S3Config {
     @Bean
     public AmazonS3 s3Client() {
 
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(s3Property.getAccessKey(), s3Property.getSecretKey());
+        BasicAWSCredentials basicAWSCredentials =
+                new BasicAWSCredentials(s3Property.getAccessKey(), s3Property.getSecretKey());
 
         return AmazonS3ClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials))

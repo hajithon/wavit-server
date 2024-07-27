@@ -2,14 +2,13 @@ package xyz.wavit.domain.image.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import java.util.Date;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.wavit.domain.image.dto.PresignedUrlResponse;
 import xyz.wavit.global.property.S3Property;
-
-import java.util.Date;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +30,10 @@ public class ImageS3Service {
         expiration.setTime(expTimeMillis);
 
         // presigned url 생성
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(s3Property.getBucket(), imageName)
-                        .withMethod(com.amazonaws.HttpMethod.PUT)
-                        .withExpiration(expiration);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(
+                        s3Property.getBucket(), imageName)
+                .withMethod(com.amazonaws.HttpMethod.PUT)
+                .withExpiration(expiration);
 
         String presignedUrl =
                 amazonS3.generatePresignedUrl(generatePresignedUrlRequest).toString();
@@ -51,12 +50,11 @@ public class ImageS3Service {
         return new PresignedUrlResponse(presignedUrl, changedName);
     }
 
-    public void uploadComplete(String imageName)
-    {
-        String storedImagePath = amazonS3.getUrl(s3Property.getBucket(), imageName).toString();
+    public void uploadComplete(String imageName) {
+        String storedImagePath =
+                amazonS3.getUrl(s3Property.getBucket(), imageName).toString();
 
         // challengeRecord에 storedImagePath 추가
 
     }
-
 }
