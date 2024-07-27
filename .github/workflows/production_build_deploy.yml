@@ -75,6 +75,8 @@ jobs:
           platforms: linux/arm64/v8
           push: true
           tags: ${{ steps.metadata.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # EC2로 배포
       - name: Deploy to EC2 Server
