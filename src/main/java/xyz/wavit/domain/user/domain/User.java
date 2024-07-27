@@ -2,6 +2,8 @@ package xyz.wavit.domain.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,6 +24,10 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
+    @Comment("사용자 권한")
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     @Comment("사용자 이름")
     private String name;
 
@@ -35,7 +41,8 @@ public class User extends BaseEntity {
     private String password;
 
     @Builder(access = AccessLevel.PRIVATE)
-    private User(String name, String nickname, String username, String password) {
+    private User(UserRole role, String name, String nickname, String username, String password) {
+        this.role = role;
         this.name = name;
         this.nickname = nickname;
         this.username = username;
@@ -44,6 +51,7 @@ public class User extends BaseEntity {
 
     public static User create(String name, String nickname, String username, String password) {
         return User.builder()
+                .role(UserRole.USER)
                 .name(name)
                 .nickname(nickname)
                 .username(username)
