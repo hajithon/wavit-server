@@ -23,7 +23,7 @@ public class UserCustomRepositoryImpl implements UserCustomRepository {
         return queryFactory
                 .selectDistinct(user)
                 .leftJoin(challenge)
-                .on(challenge.challengedUser.eq(user).and(challenge.uploadStatus.eq(ImageUploadStatus.NONE)))
+                .on(challenge.challengedUser.eq(user).and(challenge.uploadStatus.eq(ImageUploadStatus.PENDING)))
                 .where(user.ne(currentUser), challenge.isNull())
                 .orderBy(user.createdAt.desc())
                 .limit(limit)
