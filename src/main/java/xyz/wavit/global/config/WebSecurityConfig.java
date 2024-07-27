@@ -1,7 +1,6 @@
 package xyz.wavit.global.config;
 
 import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.Customizer.*;
 import static xyz.wavit.global.constant.SwaggerUrlConstant.*;
 
@@ -27,7 +26,7 @@ import xyz.wavit.global.security.JwtExceptionFilter;
 import xyz.wavit.global.security.JwtFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
