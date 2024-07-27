@@ -48,6 +48,8 @@ public class Challenge extends BaseEntity {
 
     private String comment;
 
+    private LocalDateTime completedAt;
+
     @Comment("챌린지를 수행한 유저")
     @ManyToOne(fetch = FetchType.LAZY)
     private User challengedUser;
@@ -138,5 +140,6 @@ public class Challenge extends BaseEntity {
         this.uploadStatus = ImageUploadStatus.COMPLETE;
         this.imageUrl = imageUrl;
         this.comment = comment;
+        this.completedAt = LocalDateTime.now();
     }
 }

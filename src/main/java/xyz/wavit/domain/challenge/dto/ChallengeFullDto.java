@@ -10,6 +10,7 @@ public record ChallengeFullDto(
         Long challengeId,
         LocalDateTime startAt,
         LocalDateTime finishAt,
+        LocalDateTime completedAt,
         Duration remainingTime,
         UserFullDto challengedBy,
         String imageUrl,
@@ -20,6 +21,7 @@ public record ChallengeFullDto(
                 challenge.getId(),
                 challenge.getStartAt(),
                 challenge.getFinishAt(),
+                challenge.getCompletedAt(),
                 challenge.getRemainingTime(),
                 Optional.ofNullable(challenge.getChallengedBy())
                         .map(UserFullDto::from)
@@ -29,6 +31,6 @@ public record ChallengeFullDto(
     }
 
     public static ChallengeFullDto createEmpty() {
-        return new ChallengeFullDto(null, null, null, null, UserFullDto.createEmpty(), null, null);
+        return new ChallengeFullDto(null, null, null, null, null, UserFullDto.createEmpty(), null, null);
     }
 }
