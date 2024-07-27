@@ -79,7 +79,7 @@ public class Challenge extends BaseEntity {
         return Challenge.builder()
                 .startAt(now)
                 .finishAt(calculateFinishAt(now))
-                .uploadStatus(ImageUploadStatus.NONE)
+                .uploadStatus(ImageUploadStatus.PENDING)
                 .challengedUser(challengedUser)
                 .build();
     }
@@ -90,7 +90,7 @@ public class Challenge extends BaseEntity {
         return Challenge.builder()
                 .startAt(now)
                 .finishAt(calculateFinishAt(now))
-                .uploadStatus(ImageUploadStatus.NONE)
+                .uploadStatus(ImageUploadStatus.PENDING)
                 .challengedUser(challengedUser)
                 .challengedBy(challengedBy)
                 .build();

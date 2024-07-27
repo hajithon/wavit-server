@@ -1,5 +1,6 @@
 package xyz.wavit.domain.challenge.application;
 
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import xyz.wavit.domain.challenge.dao.ChallengeRepository;
 import xyz.wavit.domain.challenge.domain.Challenge;
 import xyz.wavit.domain.challenge.domain.ChallengeValidator;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
+import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
+import xyz.wavit.domain.common.model.ImageUploadStatus;
 import xyz.wavit.domain.user.dao.UserRepository;
 import xyz.wavit.domain.user.domain.User;
 import xyz.wavit.global.util.UserUtil;
@@ -59,5 +62,24 @@ public class ChallengeService {
             var challengesByNominee = challengeRepository.findByChallengedUser(nominee);
             challengeValidator.validateAlreadyNominated(challengesByNominee);
         });
+    }
+
+    @Transactional(readOnly = true)
+    public ChallengeIncompleteDto getMyIncompleteChallenge() {
+        User currentUser = userUtil.getCurrentUser();
+
+        return challengeRepository
+                .findByUploadStatusAndChallengedUser(ImageUploadStatus.PENDING, currentUser)
+                .filter(this::isToday)
+                .map(challenge -> ChallengeIncompleteDto.of(challenge, getTodayChallengeCount(challenge)))
+                .orElse(ChallengeIncompleteDto.createEmpty());
+    }
+
+    private boolean isToday(Challenge challenge) {
+        return challenge.getCreatedAt().toLocalDate().equals(LocalDate.now());
+    }
+
+    private Long getTodayChallengeCount(Challenge challenge) {
+        return challengeRepository.findChallengeOrderForToday(challenge.getId(), LocalDate.now());
     }
 }

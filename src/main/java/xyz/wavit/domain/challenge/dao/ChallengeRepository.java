@@ -1,13 +1,17 @@
 package xyz.wavit.domain.challenge.dao;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import xyz.wavit.domain.challenge.domain.Challenge;
+import xyz.wavit.domain.common.model.ImageUploadStatus;
 import xyz.wavit.domain.user.domain.User;
 
-public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
+public interface ChallengeRepository extends JpaRepository<Challenge, Long>, ChallengeCustomRepository {
 
     int countByChallengedUser(User challengedUser);
 
     List<Challenge> findByChallengedUser(User user);
+
+    Optional<Challenge> findByUploadStatusAndChallengedUser(ImageUploadStatus uploadStatus, User challengedUser);
 }
