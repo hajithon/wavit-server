@@ -26,7 +26,7 @@ import xyz.wavit.global.security.JwtExceptionFilter;
 import xyz.wavit.global.security.JwtFilter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
