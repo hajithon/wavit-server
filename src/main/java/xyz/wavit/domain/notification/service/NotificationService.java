@@ -2,43 +2,40 @@ package xyz.wavit.domain.notification.service;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.api.services.storage.Storage;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.net.HttpHeaders;
 import com.google.gson.Gson;
-import lombok.RequiredArgsConstructor;
-import okhttp3.*;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-import xyz.wavit.domain.notification.dto.FcmMessage;
-import xyz.wavit.global.property.FcmProperty;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
-
+import lombok.RequiredArgsConstructor;
+import okhttp3.*;
+import org.springframework.stereotype.Service;
+import xyz.wavit.domain.notification.dto.FcmMessage;
+import xyz.wavit.global.property.FcmProperty;
 
 @Service
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final String API_URL = "https://fcm.googleapis.com/v1/projects/" +
-            "wavit-92b96/messages:send";
+    private final String API_URL = "https://fcm.googleapis.com/v1/projects/" + "wavit-92b96/messages:send";
     private final Gson gson = new Gson();
 
     private final FcmProperty fcmProperty;
 
     // FcmMessage를 json 형태로 변환
-    private String makeMessage(String targetToken, String title, String body) throws JsonParseException, JsonProcessingException
-    {
+    private String makeMessage(String targetToken, String title, String body)
+            throws JsonParseException, JsonProcessingException {
         FcmMessage fcmMessage = FcmMessage.builder()
                 .message(FcmMessage.Message.builder()
                         .token(targetToken)
                         .notification(FcmMessage.Notification.builder()
                                 .title(title)
                                 .body(body)
-                                .build()
-                        ).build()).validateOnly(false).build();
+                                .build())
+                        .build())
+                .validateOnly(false)
+                .build();
         return gson.toJson(fcmMessage);
     }
 
@@ -50,8 +47,7 @@ public class NotificationService {
         ByteArrayInputStream jsonInputStream = new ByteArrayInputStream(jsonContent.getBytes());
 
         // GoogleCredentials 객체 생성
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(jsonInputStream)
+        GoogleCredentials googleCredentials = GoogleCredentials.fromStream(jsonInputStream)
                 .createScoped(List.of("https://www.googleapis.com/auth/cloud-platform"));
 
         // 토큰 갱신
@@ -66,8 +62,7 @@ public class NotificationService {
         String message = makeMessage(targetToken, title, body);
 
         OkHttpClient client = new OkHttpClient();
-        RequestBody requestBody = RequestBody.create(message,
-                MediaType.get("application/json; charset=utf-8"));
+        RequestBody requestBody = RequestBody.create(message, MediaType.get("application/json; charset=utf-8"));
         Request request = new Request.Builder()
                 .url(API_URL)
                 .post(requestBody)
