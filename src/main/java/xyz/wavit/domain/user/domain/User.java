@@ -40,6 +40,8 @@ public class User extends BaseEntity {
     @Comment("사용자 비밀번호")
     private String password;
 
+    private String profileImageUrl;
+
     @Builder(access = AccessLevel.PRIVATE)
     private User(UserRole role, String name, String nickname, String username, String password) {
         this.role = role;

@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.wavit.domain.challenge.dao.ChallengeRepository;
 import xyz.wavit.domain.challenge.domain.Challenge;
 import xyz.wavit.domain.challenge.domain.ChallengeValidator;
 import xyz.wavit.domain.challenge.dto.ChallengeCreateRequest;
+import xyz.wavit.domain.challenge.dto.ChallengeFeedDto;
 import xyz.wavit.domain.challenge.dto.ChallengeIncompleteDto;
 import xyz.wavit.domain.challenge.dto.ChallengeReportDto;
 import xyz.wavit.domain.common.model.ImageUploadStatus;
@@ -110,5 +112,9 @@ public class ChallengeService {
     private int getTotalPendingChallengeCount(LocalDate today) {
         return challengeRepository.countByUploadStatusAndCreatedAtBetween(
                 ImageUploadStatus.PENDING, today.atStartOfDay(), today.atTime(LocalTime.MAX));
+    }
+
+    public Slice<ChallengeFeedDto> getTodayCompletedChallenges(int size, Long lastId) {
+        return challengeRepository.findTodayCompletedChallenges(size, lastId).map(ChallengeFeedDto::from);
     }
 }
