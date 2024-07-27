@@ -55,7 +55,7 @@ public class ImageS3Service {
     {
         String storedImagePath = amazonS3.getUrl(s3Property.getBucket(), imageName).toString();
 
-        // challengeRecord에 storedImagePaht 추가
+        // challengeRecord에 storedImagePath 추가
 
     }
 
