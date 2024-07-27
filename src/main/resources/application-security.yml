@@ -1,0 +1,13 @@
+spring:
+  config:
+    activate:
+      on-profile: security
+
+jwt:
+  issuer: ${SECURITY_JWT_ISSUER:}
+  secret: ${SECURITY_JWT_ACCESS_TOKEN_SECRET:}
+  expiration: ${SECURITY_JWT_ACCESS_TOKEN_EXPIRATION:7200}
+
+basic-auth:
+  username: ${SECURITY_BASIC_AUTH_USERNAME:default}
+  password: ${SECURITY_BASIC_AUTH_PASSWORD:default}
